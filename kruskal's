@@ -1,0 +1,57 @@
+import java.util.*;
+
+class Kruskal {
+
+    static int parent[] = new int[10];
+
+    static int find(int x) {
+        while (parent[x] != x)
+            x = parent[x];
+        return x;
+    }
+
+    static void union(int a, int b) {
+        parent[find(a)] = find(b);
+    }
+
+    public static void main(String args[]) {
+
+        int edges[][] = {
+            {0, 2, 3},
+            {3, 4, 5},
+            {0, 1, 7},
+            {2, 4, 7},
+            {1, 4, 9},
+            {0, 3, 12}
+        };
+
+        int n = 5;
+
+        for (int i = 0; i < n; i++)
+            parent[i] = i;
+
+        Arrays.sort(edges, (a, b) -> a[2] - b[2]);
+
+        int cost = 0;
+
+        System.out.println("Minimum Spanning Tree:");
+
+        for (int i = 0; i < edges.length; i++) {
+
+            int u = edges[i][0];
+            int v = edges[i][1];
+            int w = edges[i][2];
+
+            if (find(u) != find(v)) {
+
+                union(u, v);
+
+                System.out.println(u + " - " + v + " = " + w);
+
+                cost += w;
+            }
+        }
+
+        System.out.println("Minimum Cost = " + cost);
+    }
+}
