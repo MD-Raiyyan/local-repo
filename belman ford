@@ -1,0 +1,82 @@
+import java.util.Scanner;
+
+public class BellmanFord {
+
+    public static void main(String[] args) {
+
+        Scanner sc = new Scanner(System.in);
+
+        System.out.print("Enter number of vertices: ");
+        int V = sc.nextInt();
+
+        System.out.print("Enter number of edges: ");
+        int E = sc.nextInt();
+
+        int edges[][] = new int[E][3];
+
+        System.out.println("Enter source, destination and weight:");
+
+        for (int i = 0; i < E; i++) {
+            edges[i][0] = sc.nextInt();
+            edges[i][1] = sc.nextInt();
+            edges[i][2] = sc.nextInt();
+        }
+
+        int dist[] = new int[V];
+
+        // Initialize distances
+        for (int i = 0; i < V; i++) {
+            dist[i] = 9999;
+        }
+
+        int source = 0;
+        dist[source] = 0;
+
+        // Relax edges V-1 times
+        for (int i = 1; i < V; i++) {
+
+            for (int j = 0; j < E; j++) {
+
+                int u = edges[j][0];
+                int v = edges[j][1];
+                int w = edges[j][2];
+
+                if (dist[u] != 9999 &&
+                        dist[u] + w < dist[v]) {
+
+                    dist[v] = dist[u] + w;
+                }
+            }
+        }
+
+        // Check negative cycle
+        boolean negativeCycle = false;
+
+        for (int j = 0; j < E; j++) {
+
+            int u = edges[j][0];
+            int v = edges[j][1];
+            int w = edges[j][2];
+
+            if (dist[u] != 9999 &&
+                    dist[u] + w < dist[v]) {
+
+                negativeCycle = true;
+            }
+        }
+
+        if (negativeCycle) {
+            System.out.println("Negative Cycle Exists");
+        } else {
+
+            System.out.println("Shortest distances:");
+
+            for (int i = 0; i < V; i++) {
+                System.out.println(source + " -> " + i + " = " + dist[i]);
+            }
+        }
+
+        System.out.println("Time Complexity: O(VE)");
+        System.out.println("Space Complexity: O(V)");
+    }
+}
