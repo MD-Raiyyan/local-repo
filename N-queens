@@ -1,0 +1,79 @@
+public class NQueens {
+
+    static int N = 4;
+    static int board[][] = new int[N][N];
+
+    static boolean isSafe(int row, int col) {
+
+        // Check left side
+        for (int i = 0; i < col; i++) {
+            if (board[row][i] == 1)
+                return false;
+        }
+
+        // Upper diagonal
+        for (int i = row, j = col; i >= 0 && j >= 0; i--, j--) {
+            if (board[i][j] == 1)
+                return false;
+        }
+
+        // Lower diagonal
+        for (int i = row, j = col; i < N && j >= 0; i++, j--) {
+            if (board[i][j] == 1)
+                return false;
+        }
+
+        return true;
+    }
+
+    static boolean solve(int col) {
+
+        // All queens placed
+        if (col >= N)
+            return true;
+
+        for (int i = 0; i < N; i++) {
+
+            if (isSafe(i, col)) {
+
+                board[i][col] = 1;
+
+                if (solve(col + 1))
+                    return true;
+
+                // Backtrack
+                board[i][col] = 0;
+            }
+        }
+
+        return false;
+    }
+
+    static void printBoard() {
+
+        for (int i = 0; i < N; i++) {
+
+            for (int j = 0; j < N; j++) {
+                System.out.print(board[i][j] + " ");
+            }
+
+            System.out.println();
+        }
+    }
+
+    public static void main(String[] args) {
+
+        if (solve(0)) {
+
+            System.out.println("Solution Exists:");
+
+            printBoard();
+
+        } else {
+            System.out.println("No Solution");
+        }
+
+        System.out.println("Time Complexity: O(N!)");
+        System.out.println("Space Complexity: O(N^2)");
+    }
+}
